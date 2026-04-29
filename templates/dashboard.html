@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Жеке кабинет</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <a href="{% url 'home' %}" class="sidebar-logo mb-1" title="Басты бет"><img src="{% static 'img/logo.svg' %}" width="40" height="40" alt=""></a>
+            <a href="{% url 'dashboard' %}" class="sidebar-nav-item play-btn" title="Бастау"><i class="bi bi-play-fill"></i></a>
+            <a href="{% url 'dashboard' %}" class="sidebar-nav-item active" title="Басты бет"><i class="bi bi-house"></i></a>
+            <a href="{% url 'theory' %}" class="sidebar-nav-item" title="Теория"><i class="bi bi-journal-text"></i></a>
+            <a href="{% url 'learn' %}" class="sidebar-nav-item" title="Тапсырмалар"><i class="bi bi-list-task"></i></a>
+            <a href="{% url 'saved_tasks' %}" class="sidebar-nav-item" title="Сақталған тапсырмалар"><i class="bi bi-bookmark-star"></i></a>
+            <a href="{% url 'phishing' %}" class="sidebar-nav-item" title="Симулятор"><i class="bi bi-shield-exclamation"></i></a>
+            <a href="{% url 'quiz' %}" class="sidebar-nav-item" title="Тесттер"><i class="bi bi-patch-question"></i></a>
+            <a href="{% url 'chat' %}" class="sidebar-nav-item" title="Чат"><i class="bi bi-chat-dots"></i></a>
+            <a href="{% url 'stats' %}" class="sidebar-nav-item" title="Статистика"><i class="bi bi-bar-chart"></i></a>
+            <a href="{% url 'settings' %}" class="sidebar-nav-item" title="Баптаулар"><i class="bi bi-gear"></i></a>
+        </aside>
+        <main class="main-content">
+            <div class="dashboard-header">
+                <div class="greeting-card">
+                    <h2>Сәлеметсіз бе, {{ username }}!</h2>
+                    <p class="datetime" id="datetime"></p>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <a href="{% url 'theory' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-journal-text me-1"></i>Теория</a>
+                        <a href="{% url 'learn' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-list-task me-1"></i>Тапсырмалар</a>
+                        <a href="{% url 'phishing' %}" class="btn btn-success btn-sm"><i class="bi bi-play-fill me-1"></i>Симулятор</a>
+                        <a href="{% url 'quiz' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-patch-question me-1"></i>Тесттер</a>
+                    </div>
+                </div>
+                <div class="profile-card">
+                    {% include 'includes/profile_avatar.html' %}
+                    <div class="profile-info">
+                        <h6>{{ username }}</h6>
+                        <small>Pro User</small>
+                    </div>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm ms-auto" title="Шығу">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Басты навигация: Теория, Тапсырмалар, Симулятор, Тесттер -->
+            <div class="main-nav-cards mb-4">
+                <h5 class="section-title mb-3">Басты бөлімдер</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'theory' %}" class="main-nav-card">
+                            <i class="bi bi-journal-text"></i>
+                            <span>Теория</span>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'learn' %}" class="main-nav-card">
+                            <i class="bi bi-list-task"></i>
+                            <span>Тапсырмалар</span>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'phishing' %}" class="main-nav-card">
+                            <i class="bi bi-shield-exclamation"></i>
+                            <span>Симулятор</span>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'quiz' %}" class="main-nav-card">
+                            <i class="bi bi-patch-question"></i>
+                            <span>Тесттер</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="section-title mb-3">Киберқауіпсіздік тақырыптары</h5>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'phishing' %}" class="subject-card">
+                        <div class="card-icon green"><i class="bi bi-shield-exclamation"></i></div>
+                        <h5>Фишинг симуляторы</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.phishing.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.phishing.label }}</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'password' %}" class="subject-card">
+                        <div class="card-icon blue"><i class="bi bi-key"></i></div>
+                        <h5>Құпия сөз тексергіш</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.password.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.password.label }}</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'links' %}" class="subject-card">
+                        <div class="card-icon green"><i class="bi bi-link-45deg"></i></div>
+                        <h5>Сенімді сілтемелер</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.links.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.links.label }}</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'spam' %}" class="subject-card">
+                        <div class="card-icon blue"><i class="bi bi-envelope-shield"></i></div>
+                        <h5>Спам және фишинг</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.spam.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.spam.label }}</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'ai_detect' %}" class="subject-card">
+                        <div class="card-icon green"><i class="bi bi-robot"></i></div>
+                        <h5>ЖИ мен шынды ажырату</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.ai_detect.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.ai_detect.label }}</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'qr_simulator' %}" class="subject-card">
+                        <div class="card-icon blue"><i class="bi bi-qr-code-scan"></i></div>
+                        <h5>QR код симуляторы</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.qr_simulator.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.qr_simulator.label }}</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'quiz' %}" class="subject-card">
+                        <div class="card-icon green"><i class="bi bi-patch-question"></i></div>
+                        <h5>Интерактивті тест</h5>
+                        <div class="progress-bar-custom"><div class="progress-bar-fill" style="width: {{ mod.quiz.pct }}%"></div></div>
+                        <p class="progress-text">{{ mod.quiz.label }}</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('kk-KZ', options) + ' | ' + now.toLocaleTimeString('kk-KZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>

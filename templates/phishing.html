@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Фишинг симуляторы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="top-navbar d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <i class="bi bi-shield-check me-2"></i>КИБЕР-САҚШЫ
+        </a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Артқа
+        </a>
+    </nav>
+
+    <div class="main-content">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="module-header">
+                    <i class="bi bi-shield-exclamation"></i>
+                    ФИШИНГ СИМУЛЯТОРЫ (Директ хабарлар)
+                </div>
+                <div class="module-content">
+                    <p class="text-muted small mb-3">
+                        <span id="scenarioCounter" class="fw-semibold">1</span> / <span id="scenarioTotal">12</span>
+                        — хабарды оқыңыз және ол <strong>фишинг тұзағы</strong> ме әлде <strong>сенімді</strong> ме деп шешіңіз.
+                    </p>
+                    <div class="d-flex gap-2 mb-3 flex-wrap">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnScenarioPrev"><i class="bi bi-arrow-left"></i> Алдыңғы</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnScenarioNext">Келесі <i class="bi bi-arrow-right"></i></button>
+                    </div>
+                    <div class="chat-simulator">
+                        <div class="chat-header">
+                            <i class="bi bi-camera text-muted"></i>
+                            <i class="bi bi-chevron-down ms-1 text-muted"></i>
+                            <div class="chat-avatar ms-auto">
+                                <i class="bi bi-instagram"></i>
+                            </div>
+                            <div>
+                                <strong id="chatSender">Instagram</strong>
+                                <small class="d-block text-muted" id="chatChannel">Direct</small>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <div class="chat-message">
+                                <div class="sender" id="chatSenderLabel">Instagram</div>
+                                <div class="text" id="chatBody">...</div>
+                            </div>
+                            <div class="chat-header mt-2 p-2 bg-white rounded">
+                                <input type="text" class="form-control border-0" placeholder="Хабарлама жазыңыз..." readonly aria-label="Енгізу өрісі (симуляция)">
+                                <i class="bi bi-mic text-muted"></i>
+                                <i class="bi bi-image text-muted"></i>
+                                <i class="bi bi-emoji-smile text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-trap success" id="btnTrap" data-is-trap="true">
+                            <i class="bi bi-exclamation-octagon"></i> БҰЛ ТҰЗАҚ (фишинг)
+                        </button>
+                        <button type="button" class="btn btn-trap danger" id="btnTrusted" data-is-trap="false">
+                            <i class="bi bi-shield-check"></i> БҰЛ СЕНІМДІ
+                        </button>
+                    </div>
+                    <div id="phishingFeedback" class="mt-2"></div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="module-header">
+                    <i class="bi bi-play-btn"></i>
+                    БЕЙНЕЛІ СИМУЛЯЦИЯ / КЕНЕС
+                </div>
+                <div class="module-content">
+                    <p class="text-muted small">Оқулыққа арналған бейнені <code>assets/video/simulator.mp4</code> файлына салыңыз (файл жоқ болса, төменде нұсқау көрсетіледі).</p>
+                    <video id="phishingVideo" class="w-100 rounded border bg-dark" controls playsinline preload="metadata" poster="">
+                        <source src="{% static 'video/simulator.mp4' %}" type="video/mp4">
+                    </video>
+                    <p id="videoFallback" class="small text-warning mt-2 d-none mb-0">
+                        <i class="bi bi-info-circle me-1"></i>Бейне табылмады. Жоба қалтасына <strong>assets/video/simulator.mp4</strong> файлын қосыңыз да, серверді қайта іске қосыңыз.
+                    </p>
+                    <p class="small text-muted mt-3 mb-0">
+                        <i class="bi bi-key me-1"></i>Құпия сөз күшін тексеру — <a href="{% url 'password' %}">арнайы бетте</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ phishing_scenarios|json_script:"phishing-scenarios" }}
+    <div style="display:none">{% csrf_token %}</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const SCENARIOS = JSON.parse(document.getElementById('phishing-scenarios').textContent);
+        let scenarioIndex = 0;
+        const csrf = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
+
+        function applyScenario(i) {
+            scenarioIndex = Math.max(0, Math.min(i, SCENARIOS.length - 1));
+            const s = SCENARIOS[scenarioIndex];
+            document.getElementById('scenarioCounter').textContent = scenarioIndex + 1;
+            document.getElementById('scenarioTotal').textContent = SCENARIOS.length;
+            document.getElementById('chatSender').textContent = s.sender;
+            document.getElementById('chatSenderLabel').textContent = s.sender;
+            document.getElementById('chatChannel').textContent = s.channel;
+            document.getElementById('chatBody').textContent = s.body;
+            document.getElementById('phishingFeedback').textContent = '';
+            document.getElementById('phishingFeedback').className = 'mt-2';
+        }
+
+        function postAnswer(isTrap) {
+            const s = SCENARIOS[scenarioIndex];
+            fetch('{% url "phishing_check" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf
+                },
+                body: JSON.stringify({ scenario_id: s.id, is_trap: isTrap })
+            })
+            .then(r => r.json())
+            .then(data => {
+                const feedback = document.getElementById('phishingFeedback');
+                if (data.message) {
+                    feedback.className = 'mt-2 alert ' + (data.is_correct ? 'alert-success' : 'alert-danger');
+                    feedback.textContent = data.message;
+                }
+            })
+            .catch(() => {
+                const feedback = document.getElementById('phishingFeedback');
+                feedback.className = 'mt-2 alert alert-warning';
+                feedback.textContent = 'Серверге қосылу қатесі.';
+            });
+        }
+
+        document.getElementById('btnTrap').addEventListener('click', () => postAnswer(true));
+        document.getElementById('btnTrusted').addEventListener('click', () => postAnswer(false));
+        document.getElementById('btnScenarioPrev').addEventListener('click', () => applyScenario(scenarioIndex - 1));
+        document.getElementById('btnScenarioNext').addEventListener('click', () => applyScenario(scenarioIndex + 1));
+
+        applyScenario(0);
+
+        const vid = document.getElementById('phishingVideo');
+        if (vid) {
+            vid.addEventListener('error', () => {
+                const fb = document.getElementById('videoFallback');
+                if (fb) fb.classList.remove('d-none');
+            });
+        }
+    </script>
+</body>
+</html>

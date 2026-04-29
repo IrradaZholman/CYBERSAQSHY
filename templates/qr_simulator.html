@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | QR код симуляторы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="top-navbar d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="{% url 'dashboard' %}"><i class="bi bi-shield-check me-2"></i>КИБЕР-САҚШЫ</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+    </nav>
+    <div class="main-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="module-header"><i class="bi bi-qr-code-scan"></i> QR КОД СИМУЛЯТОРЫ</div>
+                <div class="module-content">
+                    <p class="text-muted mb-4">Төмендегі QR кодты «скандаңыз» (басыңыз) — қайда бағыттайтынын біліңіз. Бұл фишинг қауіпін түсінуге көмектеседі.</p>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-header bg-light"><strong>QR код #1</strong></div>
+                                <div class="card-body text-center">
+                                    <div class="mb-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://menu-cafe.kz/drinks" alt="QR1" style="width:120px;height:120px;"></div>
+                                    <small class="text-muted">Кафедегі мәзір сілтемесі деп жазылған</small>
+                                    <hr>
+                                    <button type="button" class="btn btn-primary btn-sm btn-scan" data-url="https://menu-cafe.kz/drinks" data-safe="true">
+                                        <i class="bi bi-qr-code-scan me-1"></i>Скандау
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-header bg-light"><strong>QR код #2</strong></div>
+                                <div class="card-body text-center">
+                                    <div class="mb-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://free-gift-phish.xyz/claim" alt="QR2" style="width:120px;height:120px;"></div>
+                                    <small class="text-muted">«Сыйлық алу» плакатында</small>
+                                    <hr>
+                                    <button type="button" class="btn btn-primary btn-sm btn-scan" data-url="https://free-gift-phish.xyz/claim" data-safe="false">
+                                        <i class="bi bi-qr-code-scan me-1"></i>Скандау
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-header bg-light"><strong>QR код #3</strong></div>
+                                <div class="card-body text-center">
+                                    <div class="mb-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://library.gov.kz/catalog" alt="QR3" style="width:120px;height:120px;"></div>
+                                    <small class="text-muted">Кітапханада — электронды каталог</small>
+                                    <hr>
+                                    <button type="button" class="btn btn-primary btn-sm btn-scan" data-url="https://library.gov.kz/catalog" data-safe="true">
+                                        <i class="bi bi-qr-code-scan me-1"></i>Скандау
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-header bg-light"><strong>QR код #4</strong></div>
+                                <div class="card-body text-center">
+                                    <div class="mb-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://bank-secure-login.xyz/verify" alt="QR4" style="width:120px;height:120px;"></div>
+                                    <small class="text-muted">Стендте «Банк тіркелгісін растау»</small>
+                                    <hr>
+                                    <button type="button" class="btn btn-primary btn-sm btn-scan" data-url="https://bank-secure-login.xyz/verify" data-safe="false">
+                                        <i class="bi bi-qr-code-scan me-1"></i>Скандау
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-header bg-light"><strong>QR код #5</strong></div>
+                                <div class="card-body text-center">
+                                    <div class="mb-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://egov.kz/mobile" alt="QR5" style="width:120px;height:120px;"></div>
+                                    <small class="text-muted">Мектеп стендінде — «eGov жаңартулары»</small>
+                                    <hr>
+                                    <button type="button" class="btn btn-primary btn-sm btn-scan" data-url="https://egov.kz/mobile" data-safe="true">
+                                        <i class="bi bi-qr-code-scan me-1"></i>Скандау
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-header bg-light"><strong>QR код #6</strong></div>
+                                <div class="card-body text-center">
+                                    <div class="mb-2"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://whatsapp-update-fake.ru/apk" alt="QR6" style="width:120px;height:120px;"></div>
+                                    <small class="text-muted">«WhatsApp жаңарту жүктеңіз» деген жапсырма</small>
+                                    <hr>
+                                    <button type="button" class="btn btn-primary btn-sm btn-scan" data-url="https://whatsapp-update-fake.ru/apk" data-safe="false">
+                                        <i class="bi bi-qr-code-scan me-1"></i>Скандау
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="scanResult" class="alert mt-4 d-none"></div>
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        <strong>Кеңес:</strong> QR кодты скандамас бұрын, оның қайдан келгенін тексеріңіз. Күдікті жерлердегі (стенд, плакат, есік) QR код моншақ, сыйлық, банк уәделерін беретін сілтемелерге бағыттауы мүмкін.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.btn-scan').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.dataset.url;
+                const safe = this.dataset.safe === 'true';
+                const res = document.getElementById('scanResult');
+                res.classList.remove('d-none');
+                if (safe) {
+                    res.className = 'alert alert-success mt-4';
+                    res.innerHTML = '<i class="bi bi-shield-check me-2"></i><strong>Сенімді сілтеме:</strong> ' + url + ' — белгілі домен, қауіпсіз.';
+                } else {
+                    res.className = 'alert alert-danger mt-4';
+                    res.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i><strong>Қауіпті!</strong> Сілтеме ' + url + ' — фишинг сайтына бағыттауы мүмкін! .xyz домені, сыйлық/банк уәделері — қауіп белгісі.';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

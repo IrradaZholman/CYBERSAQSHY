@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | SMS сүйреу симуляторы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="sms-drag-page">
+    <div class="dashboard-wrapper">
+        <aside class="sidebar sms-drag-sidebar">
+            <a href="{% url 'dashboard' %}" class="sidebar-nav-item play-btn" title="Бастау"><i class="bi bi-play-fill"></i></a>
+            <a href="{% url 'dashboard' %}" class="sidebar-nav-item" title="Басты бет"><i class="bi bi-house"></i></a>
+            <a href="{% url 'theory' %}" class="sidebar-nav-item" title="Теория"><i class="bi bi-journal-text"></i></a>
+            <a href="{% url 'learn' %}" class="sidebar-nav-item" title="Тапсырмалар"><i class="bi bi-list-task"></i></a>
+            <a href="{% url 'sms_drag' %}" class="sidebar-nav-item active" title="SMS симуляторы"><i class="bi bi-phone"></i></a>
+            <a href="{% url 'phishing' %}" class="sidebar-nav-item" title="Фишинг"><i class="bi bi-shield-exclamation"></i></a>
+            <a href="{% url 'quiz' %}" class="sidebar-nav-item" title="Тесттер"><i class="bi bi-patch-question"></i></a>
+            <a href="{% url 'stats' %}" class="sidebar-nav-item" title="Статистика"><i class="bi bi-bar-chart"></i></a>
+        </aside>
+
+        <div class="sms-drag-inner d-flex flex-grow-1 flex-column flex-lg-row min-vh-100">
+            <aside class="drag-palette">
+                <p class="drag-palette-title text-uppercase small mb-3">Жауаптар</p>
+                <div class="drag-chip-group mb-3">
+                    <span class="text-muted small d-block mb-2">Сипаттама</span>
+                    <button type="button" class="drag-chip" draggable="true" data-value="kuman">Күмәнды</button>
+                    <button type="button" class="drag-chip" draggable="true" data-value="kumansiz">Күмәнсіз</button>
+                    <button type="button" class="drag-chip" draggable="true" data-value="durys">Дұрыс</button>
+                    <button type="button" class="drag-chip" draggable="true" data-value="durys_emes">Дұрыс емес</button>
+                </div>
+                <div class="drag-chip-group">
+                    <span class="text-muted small d-block mb-2">Қысқа нөмірлер</span>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="n0611">0611</button>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="n7711">7711</button>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="n7575">7575</button>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="n9090">9090</button>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="n7111">7111</button>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="n9999">9999</button>
+                    <button type="button" class="drag-chip drag-chip--num" draggable="true" data-value="phone">+7 777 457 6421</button>
+                </div>
+                <p class="small text-muted mt-3 mb-0"><i class="bi bi-info-circle me-1"></i>Смартфонда: батырманы басыңыз, содан кейін толықтыққа басыңыз.</p>
+            </aside>
+
+            <main class="sms-drag-workspace flex-grow-1">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <h1 class="h5 mb-0 text-cyan-glow"><i class="bi bi-droplet-half me-2"></i>SMS сүйреу симуляторы</h1>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-cyan btn-sm"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+                </div>
+
+                <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+                    <span class="text-cyan-glow small fw-semibold" id="smsCounter">SMS 1 / 10</span>
+                    <div class="progress flex-grow-1 sms-scen-progress" style="height: 6px; max-width: 280px; --bs-progress-bar-bg: #00c2c2;">
+                        <div class="progress-bar" id="smsScenBar" role="progressbar" style="width: 10%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="10"></div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btnPrevSms" disabled><i class="bi bi-chevron-left me-1"></i>Алдыңғы SMS</button>
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btnNextSms">Келесі SMS <i class="bi bi-chevron-right ms-1"></i></button>
+                </div>
+
+                <div class="sms-preview mb-4">
+                    <div class="sms-preview-icon"><i class="bi bi-chat-dots-fill"></i></div>
+                    <div>
+                        <p class="sms-preview-label mb-1">Келген хабар</p>
+                        <p class="sms-preview-text mb-0" id="smsPreviewText"></p>
+                    </div>
+                </div>
+
+                <div class="drop-task mb-3">
+                    <p class="drop-task-q mb-2" id="dropQ1"></p>
+                    <div class="drop-zone" data-zone="q1" tabindex="0" role="button" aria-label="Жауап орны 1"></div>
+                </div>
+                <div class="drop-task mb-3">
+                    <p class="drop-task-q mb-2" id="dropQ2"></p>
+                    <div class="drop-zone" data-zone="q2" tabindex="0" role="button" aria-label="Жауап орны 2"></div>
+                </div>
+                <div class="drop-task mb-4">
+                    <p class="drop-task-q mb-2" id="dropQ3"></p>
+                    <div class="drop-zone" data-zone="q3" tabindex="0" role="button" aria-label="Жауап орны 3"></div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <button type="button" class="btn btn-cyan px-4" id="btnCheck">Тексеру</button>
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btnReset">Тазалау</button>
+                </div>
+                <div id="checkResult" class="check-result-box mt-4" role="status" aria-live="polite" hidden></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+(function() {
+    const LABELS = {
+        kuman: 'Күмәнды',
+        kumansiz: 'Күмәнсіз',
+        durys: 'Дұрыс',
+        durys_emes: 'Дұрыс емес',
+        n0611: '0611',
+        n7711: '7711',
+        n7575: '7575',
+        n9090: '9090',
+        n7111: '7111',
+        n9999: '9999',
+        phone: '+7 777 457 6421'
+    };
+
+    const SCENARIOS = [
+        {
+            sender: 'Beeline',
+            body: 'Сіздің нөмеріңіздің уақыты бітті, оны ұзарту керек, әйтпесе бұғатталады. Номер: +7 777 457 6421',
+            q: [
+                { text: '1. Айтылған хабар күмәнді ме?', correct: 'kuman', hint: 'Қорқыту және белгісіз ұялы нөмір — күдікті белгілер.' },
+                { text: '2. Хабардағы нөмір ресми оператор хатындай дұрыс па?', correct: 'durys_emes', hint: 'Ресми SMS әдетте қысқа қызмет нөмірінен келеді.' },
+                { text: '3. Ұялы байланыс туралы ресми анықтама үшін жиі қолданылатын қысқа нөмір (жаттығу мысалы)', correct: 'n0611', hint: '0611 — операторлық нөмір мысалы.' }
+            ]
+        },
+        {
+            sender: 'Kaspi',
+            body: 'Шотыңыз бұғатталды! 24 сағ ішінде https://kaspi-verify.kz/recover сілтемесімен растаңыз.',
+            q: [
+                { text: '1. Бұл хабар күмәнды ме?', correct: 'kuman', hint: 'Белгісіз домен және қысқа мерзім — фишинг белгісі.' },
+                { text: '2. Сілтеме мен формат ресми хабарламаға ұқсай ма?', correct: 'durys_emes', hint: 'Құпия деректерді SMS сілтемесі арқылы растау қауіпті.' },
+                { text: '3. Банк шоты күдікті болғанда кеңес алу үшін қай қысқа нөмірді мысал ретінде таңдаймыз?', correct: 'n7111', hint: '7111 — сабақтағы банк қызметінің қысқа желі мысалы.' }
+            ]
+        },
+        {
+            sender: 'Prize2025',
+            body: 'Құттықтаймыз! Сіз iPhone 16 ұтып алдыңыз! Толығырақ: https://bit.ly/prize-kz-claim',
+            q: [
+                { text: '1. Хабар күмәнды ме?', correct: 'kuman', hint: 'Құттықтау және қысқа сілтеме әдетте алаяқтық.' },
+                { text: '2. Ұтыс туралы бұл формат сенімді ме?', correct: 'durys_emes', hint: 'Құнды ұтыстарды алда жазбамен сенбеу керек.' },
+                { text: '3. Алаяқтық туралы хабарлауға арналған қысқа нөмер (жаттығу мысалы)', correct: 'n9999', hint: '9999 — құқық қорғау/анықтама желісі мысалы.' }
+            ]
+        },
+        {
+            sender: '1414',
+            body: '№7 гимназия: ертең 8:30 сабақ басталады. Кешікпеңіз. Әкімшілік.',
+            q: [
+                { text: '1. Бұл хабар күмәнді ме?', correct: 'kumansiz', hint: 'Қысқа нөмірден қарапайым мектеп хабарламасы.' },
+                { text: '2. Хабарда қорқыту немесе күмәнді сілтеме жоқ па? (формат дұрыс па?)', correct: 'durys', hint: 'Қысқа хабар, сілтемесіз — дұрыс формат.' },
+                { text: '3. Мектеп/қоғамдық хабарға қатысты қызметтік нөмір мысалы', correct: 'n9090', hint: '9090 — жаттығудағы қысқа қызмет нөмірі мысалы.' }
+            ]
+        },
+        {
+            sender: '+7 702',
+            body: 'Апа, менімен телефон сынды. Тез 50 мың жіберші на осы нөмірге +7 777 457 6421, срочно!',
+            q: [
+                { text: '1. Хабар күмәнды ме?', correct: 'kuman', hint: 'Жедел ақша сұрау — типтік схема.' },
+                { text: '2. Аударуды талап ететін нөмір сенімді түрде ресми ме?', correct: 'durys_emes', hint: 'Туыс сыяқты сөзбен сендіруді телефонмен растаңыз.' },
+                { text: '3. Мәтіндегі күмәнді ұялы нөмірді таңдаңыз (жаттығу)', correct: 'phone', hint: '+7 777 457 6421 батырмасын сүйреңіз.' }
+            ]
+        },
+        {
+            sender: 'Kaspi',
+            body: 'Код: 591028. Оны ешкімге айтпаңыз, Kaspi қызметкерлері сұрамайды.',
+            q: [
+                { text: '1. Хабар күмәнды ме?', correct: 'kumansiz', hint: 'OTP хабарламасы, сілтемесіз, ескерту бар.' },
+                { text: '2. Мазмұны дұрыс форматта па?', correct: 'durys', hint: 'Код бөліп жібермеу туралы ескерту дұрыс.' },
+                { text: '3. Төлем/қызмет қадағалау үшін қысқа желі мысалы', correct: 'n7575', hint: '7575 — жаттығудағы қызметтік нөмір мысалы.' }
+            ]
+        },
+        {
+            sender: 'EgovRefund',
+            body: 'Салықтан қайтарым 152 000 ₸. Растау: http://egov-refund-notreal.kz/form',
+            q: [
+                { text: '1. Хабар күмәнді ме?', correct: 'kuman', hint: 'Мемлекеттіктер осындай SMS сілтемелерін жиі жібермейді.' },
+                { text: '2. Домен мен сілтеме ресми ме?', correct: 'durys_emes', hint: 'Белгісіз домен — фишинг.' },
+                { text: '3. Ресми сұраулар туралы кеңес үшін жалпы азаматтық қызмет нөмірі мысалы', correct: 'n0611', hint: '0611 — жөніндө ақпарат алу үшін операторлық/қызметтік мысал.' }
+            ]
+        },
+        {
+            sender: 'KZPost',
+            body: 'Посылка кз: курьер 500₸. Төлем құрылғысы: http://kzpost-pay.fake/kz',
+            q: [
+                { text: '1. Хабар күмәнды ме?', correct: 'kuman', hint: 'Жалған домен және төлем сілтемесі.' },
+                { text: '2. Пошта форматы мен сілтеме сенімді ме?', correct: 'durys_emes', hint: 'Ресми пошта әдеттегі домендерден хабарлайды.' },
+                { text: '3. Жалған жеткізу хабарынан кейін кеңес алу үшін қысқа нөмір мысалы', correct: 'n7711', hint: '7711 — жаттығудағы қосымша қызмет желісі.' }
+            ]
+        },
+        {
+            sender: 'Activ',
+            body: 'Тізімдену: қалдықты *111# немесе activ.kz арқылы тексеріңіз. Сізбен — Activ.',
+            q: [
+                { text: '1. Хабар күмәнды ме?', correct: 'kumansiz', hint: 'Ресми USSD және домен көрсетілген ақпараттық хабар.' },
+                { text: '2. Нөмірлер мен сілтеме ресми сияқты ма?', correct: 'durys', hint: 'activ.kz және *111# типтік ресми формат.' },
+                { text: '3. Осы хабардағы ұялы брендке жақын қысқа нөмер мысалы', correct: 'n7711', hint: '7711 — жаттығуда Activ жақтан қызмет мысалы.' }
+            ]
+        },
+        {
+            sender: 'Telegram',
+            body: 'Кіру коды: 48291. Басқа ешкімге жазыңыз. @telegram бұл кодты сұрамайды.',
+            q: [
+                { text: '1. Хабар күмәнды ме?', correct: 'kumansiz', hint: 'Хабарлама коды және ескерту логикалы.' },
+                { text: '2. Ескерту мәтіні дұрыс па?', correct: 'durys', hint: 'Қызмет кодты сұрамайды дегені дұрыс.' },
+                { text: '3. Мессенджер/қауіпсіздік туралы анықтама нөмірі мысалы', correct: 'n9090', hint: '9090 — жаттығуда қосымша анықтама мысалы.' }
+            ]
+        }
+    ];
+
+    let currentIdx = 0;
+    let selectedValue = null;
+
+    function getCorrect() {
+        const s = SCENARIOS[currentIdx];
+        return { q1: s.q[0].correct, q2: s.q[1].correct, q3: s.q[2].correct };
+    }
+
+    function getHints() {
+        const s = SCENARIOS[currentIdx];
+        return { q1: s.q[0].hint, q2: s.q[1].hint, q3: s.q[2].hint };
+    }
+
+    function clearResult() {
+        var r = document.getElementById('checkResult');
+        if (!r) return;
+        r.hidden = true;
+        r.innerHTML = '';
+    }
+
+    function clearZones() {
+        document.querySelectorAll('.drop-zone').forEach(function(zone) {
+            zone.removeAttribute('data-placed');
+            zone.innerHTML = '';
+            zone.classList.remove('drop-zone--filled');
+        });
+        document.querySelectorAll('.drag-chip').forEach(function(c) { c.classList.remove('drag-chip--pick'); });
+        selectedValue = null;
+    }
+
+    function renderScenario() {
+        const s = SCENARIOS[currentIdx];
+        document.getElementById('smsPreviewText').innerHTML = '<strong>' + s.sender + ':</strong> ' + s.body;
+        document.getElementById('dropQ1').textContent = s.q[0].text;
+        document.getElementById('dropQ2').textContent = s.q[1].text;
+        document.getElementById('dropQ3').textContent = s.q[2].text;
+        var n = SCENARIOS.length;
+        document.getElementById('smsCounter').textContent = 'SMS ' + (currentIdx + 1) + ' / ' + n;
+        var pct = Math.round(100 * (currentIdx + 1) / n);
+        var bar = document.getElementById('smsScenBar');
+        bar.style.width = pct + '%';
+        bar.setAttribute('aria-valuenow', String(currentIdx + 1));
+        document.getElementById('btnPrevSms').disabled = currentIdx === 0;
+        document.getElementById('btnNextSms').disabled = currentIdx === n - 1;
+        clearZones();
+        clearResult();
+    }
+
+    function readZonesFromDOM() {
+        var out = { q1: null, q2: null, q3: null };
+        document.querySelectorAll('.drop-zone').forEach(function(z) {
+            var k = z.getAttribute('data-zone');
+            if (k) out[k] = z.getAttribute('data-placed') || null;
+        });
+        return out;
+    }
+
+    function setZone(zoneEl, value) {
+        if (!value) return;
+        zoneEl.setAttribute('data-placed', value);
+        zoneEl.innerHTML = '<span class="placed-label">' + (LABELS[value] || value) + '</span>';
+        zoneEl.classList.add('drop-zone--filled');
+    }
+
+    document.querySelectorAll('.drag-chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+            document.querySelectorAll('.drag-chip').forEach(function(c) { c.classList.remove('drag-chip--pick'); });
+            selectedValue = chip.getAttribute('data-value');
+            chip.classList.add('drag-chip--pick');
+        });
+        chip.addEventListener('dragstart', function(e) {
+            var v = chip.getAttribute('data-value');
+            e.dataTransfer.setData('text/plain', v || '');
+            e.dataTransfer.effectAllowed = 'copy';
+        });
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(function(zone) {
+        zone.addEventListener('click', function() {
+            if (selectedValue) {
+                setZone(zone, selectedValue);
+                clearResult();
+            }
+        });
+        zone.addEventListener('dragenter', function(e) { e.preventDefault(); });
+        zone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            zone.classList.add('drop-zone--hover');
+        });
+        zone.addEventListener('dragleave', function() {
+            zone.classList.remove('drop-zone--hover');
+        });
+        zone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            zone.classList.remove('drop-zone--hover');
+            var v = e.dataTransfer.getData('text/plain');
+            if (v) { setZone(zone, v); clearResult(); }
+        });
+    });
+
+    document.getElementById('btnReset').addEventListener('click', function() {
+        clearZones();
+        clearResult();
+    });
+
+    document.getElementById('btnPrevSms').addEventListener('click', function() {
+        if (currentIdx > 0) { currentIdx--; renderScenario(); }
+    });
+    document.getElementById('btnNextSms').addEventListener('click', function() {
+        if (currentIdx < SCENARIOS.length - 1) { currentIdx++; renderScenario(); }
+    });
+
+    document.getElementById('btnCheck').addEventListener('click', function() {
+        var z = readZonesFromDOM();
+        var CORRECT = getCorrect();
+        var HINTS = getHints();
+        var r = document.getElementById('checkResult');
+        if (!r) return;
+        var keys = ['q1', 'q2', 'q3'];
+        var okCount = 0;
+        var html = '<div class="check-summary p-3 rounded">';
+        keys.forEach(function(k, i) {
+            var got = z[k];
+            var exp = CORRECT[k];
+            var ok = got === exp;
+            if (ok) okCount++;
+            html += '<div class="check-row mb-2 ' + (ok ? 'check-ok' : 'check-bad') + '">';
+            html += '<strong>' + (ok ? '✓' : '✗') + '</strong> ';
+            html += (i + 1) + '-сұрақ: ';
+            if (!got) {
+                html += 'жауап жоқ.';
+            } else if (ok) {
+                html += 'дұрыс.';
+            } else {
+                html += 'қате. Күтілген: <strong>' + (LABELS[exp] || exp) + '</strong>. ' + (HINTS[k] || '');
+            }
+            html += '</div>';
+        });
+        html += '<p class="check-total mb-0 mt-3 fw-semibold">' + (okCount === 3 ? 'Барлығы дұрыс!' : 'Дұрыс жауаптар: ' + okCount + ' / 3 (SMS ' + (currentIdx + 1) + ' / ' + SCENARIOS.length + ')') + '</p>';
+        html += '</div>';
+        r.innerHTML = html;
+        r.hidden = false;
+        r.setAttribute('aria-hidden', 'false');
+        try { r.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+        catch (e) { r.scrollIntoView(true); }
+    });
+
+    renderScenario();
+})();
+    </script>
+</body>
+</html>

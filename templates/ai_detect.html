@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | ЖИ мен шынды ажырату</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="top-navbar d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="{% url 'dashboard' %}"><i class="bi bi-shield-check me-2"></i>КИБЕР-САҚШЫ</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+    </nav>
+    <div class="main-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="module-header"><i class="bi bi-robot"></i> ЖИ МЕН ШЫНДЫ АЖЫРАТА БІЛУ</div>
+                <div class="module-content">
+                    <p class="text-muted mb-4">Төмендегі мәтінді оқып, оны <strong>ЖИ (жасанды интеллект)</strong> жазығанын немесе <strong>адам</strong> жазығанын таңдаңыз.</p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Тапсырма <span id="currentNum">1</span> / <span id="totalNum">5</span></span>
+                        <div class="progress flex-grow-1 mx-3" style="height: 8px;">
+                            <div class="progress-bar bg-success" id="progressBar" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    <div class="card border-0 bg-light mb-4">
+                        <div class="card-body p-4">
+                            <p id="sampleText" class="mb-4 lead">Мәтін жүктелуде...</p>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-secondary text-start py-3 btn-choice" data-choice="human">
+                                    <i class="bi bi-person me-2"></i>Адам жазыған
+                                </button>
+                                <button class="btn btn-outline-secondary text-start py-3 btn-choice" data-choice="ai">
+                                    <i class="bi bi-robot me-2"></i>ЖИ (жасанды интеллект) жазыған
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="feedback" class="alert d-none"></div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-outline-secondary" id="btnPrev" disabled><i class="bi bi-arrow-left me-1"></i>Алдыңғы</button>
+                        <button class="btn btn-success" id="btnNext">Келесі <i class="bi bi-arrow-right ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none">{% csrf_token %}</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const samples = [
+            { id: 1, text: "Сәлем! Бүгін сабақ қиын болды. Мұғалім жаңа тақырып түсіндірді, мен толық түсінбедім. Үйге келіп қайта оқып шықтым. Ертең сұрақтарым бар.", answer: 'human' },
+            { id: 2, text: "Киберқауіпсіздік — заманауи ақпараттық қоғамның маңызды құрамдас бөлігі. Оның негізгі мақсаты — электрондық деректерді қорғау және құпиялылықты қамтамасыз ету. Бұл сала күнделікті дамуда.", answer: 'ai' },
+            { id: 3, text: "Менің достарым киберспорт ойнайды. Біз кешке көп уақыт бірге отырып ойнадық. Жеңдік! Өте қуандым)", answer: 'human' },
+            { id: 4, text: "Құпия сөздерді қорғау үшін күшті парольдерді қолдану өте маңызды. Кем дегенде 12 таңба, әртүрлі әріптер мен сандар қосылуы керек. Сондай-ақ екі факторлы аутентификацияны қолдану ұсынылады.", answer: 'ai' },
+            { id: 5, text: "Мен бүгін әкеммен дүкенге бардым. Нан, сүт, алма сатып алдық. Үйге келгенде достарым Telegram-да жазып тұрды :D", answer: 'human' },
+            { id: 6, text: "Осы мәтін киберқауіпсіздік тұжақсында жазылған. Ол пайдаланушылардың құпиялылығын қорғауға бағытталған. Жалпылама ұсынымдар төменде берілген. Нәтижесін мониторингтеу керек.", answer: 'ai' },
+            { id: 7, text: "кеште пицца заказдадық бірақ уақытында келмеді. 40 мин күттік сосын кері қоңырау шалдық", answer: 'human' },
+            { id: 8, text: "Мен математикадан 4 алдым :( Енді көп жаттығу керек, мұғалім түсіндіргенді қайта көрем", answer: 'human' },
+            { id: 9, text: "Фишинг — әлеуметтік инженерия әдістерінің бір түрі. Оның көздеген мақсаты — жүйеге заңды кіру тиындарын алу. Осыған орай пайдаланушыларды хабардар ету қажет.", answer: 'ai' },
+            { id: 10, text: "QR код сканерсіз белгісіз плакатқа сенбеу керек — мұны сабақта айтты. Мен жазып алдым блокнотқа", answer: 'human' }
+        ];
+        let currentIndex = 0;
+        const checkUrl = '{% url "ai_detect_check" %}';
+        const csrf = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
+
+        function showSample(index) {
+            currentIndex = index;
+            const s = samples[index];
+            document.getElementById('sampleText').textContent = s.text;
+            document.getElementById('currentNum').textContent = index + 1;
+            document.getElementById('totalNum').textContent = samples.length;
+            document.getElementById('progressBar').style.width = ((index + 1) / samples.length * 100) + '%';
+            document.getElementById('feedback').classList.add('d-none');
+            document.querySelectorAll('.btn-choice').forEach(b => { b.disabled = false; b.classList.remove('btn-success', 'btn-danger'); });
+            document.getElementById('btnPrev').disabled = index === 0;
+        }
+
+        document.querySelectorAll('.btn-choice').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+                const choice = this.dataset.choice;
+                const sample = samples[currentIndex];
+                fetch(checkUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf },
+                    body: JSON.stringify({ sample_id: sample.id, choice })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    document.querySelectorAll('.btn-choice').forEach(b => b.disabled = true);
+                    this.classList.add(data.is_correct ? 'btn-success' : 'btn-danger');
+                    const fb = document.getElementById('feedback');
+                    fb.classList.remove('d-none');
+                    fb.className = 'alert ' + (data.is_correct ? 'alert-success' : 'alert-danger');
+                    fb.textContent = data.message;
+                });
+            });
+        });
+
+        document.getElementById('btnNext').addEventListener('click', () => {
+            if (currentIndex < samples.length - 1) showSample(currentIndex + 1);
+            else alert('Барлық тапсырмалар аяқталды!');
+        });
+        document.getElementById('btnPrev').addEventListener('click', () => showSample(currentIndex - 1));
+        showSample(0);
+    </script>
+</body>
+</html>

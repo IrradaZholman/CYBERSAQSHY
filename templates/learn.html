@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Білім базасы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="top-navbar d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'home' %}{% endif %}"><img src="{% static 'img/logo.svg' %}" width="32" height="32" alt="" class="me-2 align-text-bottom">КИБЕР-САҚШЫ</a>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <a href="{% url 'theory' %}" class="btn btn-outline-primary btn-sm d-none d-md-inline-block"><i class="bi bi-search me-1"></i>Теория іздеу</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'saved_tasks' %}" class="btn btn-outline-warning btn-sm"><i class="bi bi-bookmark-star me-1"></i>Сақталған</a>
+            {% else %}
+            <a href="{% url 'register' %}" class="btn btn-success btn-sm"><i class="bi bi-person-plus me-1"></i>Тіркелу</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Кіру</a>
+            {% endif %}
+            <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+        </div>
+    </nav>
+    <div class="main-content">
+        <div class="mb-4">
+            <h4 class="fw-bold">Киберқауіпсіздік негіздері</h4>
+            <p class="text-muted mb-1">7-сынып оқушыларына арналған оқу материалдары</p>
+            {% if not user.is_authenticated %}
+            <p class="small text-warning mb-0"><i class="bi bi-info-circle me-1"></i>Тапсырмаларды сақтау үшін аккаунт керек — <a href="{% url 'register' %}">тіркелу</a> немесе <a href="{% url 'login' %}">кіру</a>.</p>
+            {% endif %}
+        </div>
+        <div style="display:none">{% csrf_token %}</div>
+        <div class="row g-4">
+            {% with saved=saved_task_slugs %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="phishing" title="Сақтау">
+                        <i class="bi {% if 'phishing' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'phishing' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon green mb-3"><i class="bi bi-shield-exclamation"></i></div>
+                            <h6 class="fw-semibold">Фишинг қандай қауіпті?</h6>
+                            <p class="small text-muted mb-0">Фишинг — алаяқтардың құпия мәліметтеріңізді алу әдісі. 12+ директ хабармен жаттығу...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="password" title="Сақтау">
+                        <i class="bi {% if 'password' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'password' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon blue mb-3"><i class="bi bi-key"></i></div>
+                            <h6 class="fw-semibold">Құпия сөз қалай құрастыру керек?</h6>
+                            <p class="small text-muted mb-0">Күшті құпия сөз — ұзындық пен әртүрлі таңбалар...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="links" title="Сақтау">
+                        <i class="bi {% if 'links' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'links' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon green mb-3"><i class="bi bi-link-45deg"></i></div>
+                            <h6 class="fw-semibold">Сенімді сілтемелерді қалай тануға болады?</h6>
+                            <p class="small text-muted mb-0">Интерактивті тексеру — 8 сілтеме...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="spam" title="Сақтау">
+                        <i class="bi {% if 'spam' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'spam' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon blue mb-3"><i class="bi bi-envelope-shield"></i></div>
+                            <h6 class="fw-semibold">Спамнан қалай қорғануға болады?</h6>
+                            <p class="small text-muted mb-0">4 жаттығу — спам/фишинг ажырату...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="ai_detect" title="Сақтау">
+                        <i class="bi {% if 'ai_detect' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'ai_detect' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon green mb-3"><i class="bi bi-robot"></i></div>
+                            <h6 class="fw-semibold">ЖИ мен шынды ажырата білу</h6>
+                            <p class="small text-muted mb-0">10 мысал...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="qr_simulator" title="Сақтау">
+                        <i class="bi {% if 'qr_simulator' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'qr_simulator' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon blue mb-3"><i class="bi bi-qr-code-scan"></i></div>
+                            <h6 class="fw-semibold">QR код симуляторы</h6>
+                            <p class="small text-muted mb-0">QR код скандау қауіпін түсіну...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="quiz" title="Сақтау">
+                        <i class="bi {% if 'quiz' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'quiz' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon green mb-3"><i class="bi bi-patch-question"></i></div>
+                            <h6 class="fw-semibold">Біліміңізді тексеріңіз</h6>
+                            <p class="small text-muted mb-0">Кеңейтілген тест...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="sms_drag" title="Сақтау">
+                        <i class="bi {% if 'sms_drag' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'sms_drag' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon green mb-3"><i class="bi bi-phone"></i></div>
+                            <h6 class="fw-semibold">SMS сүйреу симуляторы</h6>
+                            <p class="small text-muted mb-0">Хабарды оқыңыз, жауаптарды сүйреп немесе басып орналастырыңыз.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card border h-100 subject-card position-relative">
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-link position-absolute top-0 end-0 py-2 px-3 task-save-btn z-3 text-decoration-none" data-slug="theory" title="Сақтау">
+                        <i class="bi {% if 'theory' in saved %}bi-star-fill text-warning{% else %}bi-star text-muted{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <a href="{% url 'theory' %}" class="text-decoration-none text-dark d-block">
+                            <div class="card-icon blue mb-3"><i class="bi bi-journal-text"></i></div>
+                            <h6 class="fw-semibold">Теория мен іздеу</h6>
+                            <p class="small text-muted mb-0">Тақырыптар бойынша мәтін және сол жақта іздеу...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const saveToggleUrl = '{% url "saved_tasks_toggle" %}';
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+        document.querySelectorAll('.task-save-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const slug = btn.getAttribute('data-slug');
+                fetch(saveToggleUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+                    body: JSON.stringify({ slug: slug })
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.error) return;
+                    const icon = btn.querySelector('i');
+                    if (data.saved) {
+                        icon.className = 'bi bi-star-fill text-warning';
+                    } else {
+                        icon.className = 'bi bi-star text-muted';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

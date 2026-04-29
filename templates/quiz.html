@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Интерактивті тест</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="top-navbar d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="{% url 'dashboard' %}"><i class="bi bi-shield-check me-2"></i>КИБЕР-САҚШЫ</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+    </nav>
+    <div class="main-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="module-header"><i class="bi bi-patch-question"></i> КИБЕРҚАУІПСІЗДІК ТЕСТІ</div>
+                <div class="module-content">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="text-muted">Сұрақ <span id="qNum">1</span> / <span id="qTotal">10</span></span>
+                        <div class="progress flex-grow-1 mx-3" style="height: 8px;">
+                            <div class="progress-bar bg-success" id="qProgress" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="card border-0 bg-light">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-4" id="qText">Құпия сөз қандай болуы керек?</h5>
+                            <div class="d-grid gap-2" id="answersContainer">
+                                <button type="button" class="btn btn-outline-secondary text-start py-3 btn-answer" data-idx="0">
+                                    <i class="bi bi-circle me-2"></i><span></span>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary text-start py-3 btn-answer" data-idx="1">
+                                    <i class="bi bi-circle me-2"></i><span></span>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary text-start py-3 btn-answer" data-idx="2">
+                                    <i class="bi bi-circle me-2"></i><span></span>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary text-start py-3 btn-answer" data-idx="3">
+                                    <i class="bi bi-circle me-2"></i><span></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="qFeedback" class="alert mt-3 d-none"></div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-secondary" id="btnPrev" disabled><i class="bi bi-arrow-left me-1"></i>Алдыңғы</button>
+                        <button type="button" class="btn btn-success" id="btnNext">Келесі <i class="bi bi-arrow-right ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none">{% csrf_token %}</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const quizProgressUrl = '{% url "quiz_progress" %}';
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+        function syncQuizProgress(answeredCount, scoreOpt) {
+            const body = { answered: answeredCount, total: questions.length };
+            if (scoreOpt != null) body.score = scoreOpt;
+            fetch(quizProgressUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                body: JSON.stringify(body),
+            }).catch(function() {});
+        }
+        const questions = [
+            { q: "Құпия сөз қандай болуы керек?", opts: ["Қысқа және қарапайым (мысалы: 123456)", "Ұзын, әртүрлі таңбалармен (әріптер, сандар, белгілер)", "Тек туыстар атымен", "Барлық сайттарда бірдей"], correct: 1 },
+            { q: "Фишинг деген не?", opts: ["Алаяқтардың құпия мәліметтерді алу әдісі", "Компьютер вирусы", "Спам пошта", "Құпия сөз жасау бағдарламасы"], correct: 0 },
+            { q: "Қауіпті сілтемені қалай тануға болады?", opts: ["Қысқа домен (.xyz, .ru)", "HTTPS жоқ", "Белгісіз жіберушіден келген", "Жоғарыдағылардың бәрі"], correct: 3 },
+            { q: "Екі факторлы аутентификация деген не?", opts: ["Екі құпия сөз қолдану", "Құпия сөз + SMS/бағдарлама коды", "Екі жеке құпия сөз", "Қос тіркелгі"], correct: 1 },
+            { q: "Белгісіз хабарда сілтеме келсе, не істеу керек?", opts: ["Сілтемені тез ашу", "Құпия мәліметтерді енгізу", "Сілтемені ашпау, хабарды өшіру", "Достарыңа жіберу"], correct: 2 },
+            { q: "QR кодты қайда скандау қауіпсіз?", opts: ["Кез келген стендте", "Белгісіз плакатта", "Сенімді мекемеде (кітапхана, мұрағат)", "«Сыйлық алу» жазуында"], correct: 2 },
+            { q: "Спам деген не?", opts: ["Вирус түрі", "Сұрамаған рекламалық хабарлар", "Құпия сөз басқарушы", "Банк хабарламасы"], correct: 1 },
+            { q: "ЖИ (жасанды интеллект) қауіпі қандай?", opts: ["ЖИ жоқ қауіп", "Фишинг хабарларын табиғи түрде жазу", "Компьютерды бұзу", "Интернетті өшіру"], correct: 1 },
+            { q: "Құпия сөз кем дегенде қанша таңбадан тұруы керек (ұсыныс)?", opts: ["4", "6", "8", "12 және одан ұзын"], correct: 3 },
+            { q: "«Тіркелгіңіз бұғатталады! Тез ашыңыз!» деген хабар — қандай?", opts: ["Шынайы ескерту", "Фишинг белгісі", "Реклама", "Жаңалық"], correct: 1 },
+            { q: "Антивирусты не үшін қолданады?", opts: ["Интернет жылдамдығын арттыру", "Зиянды бағдарламалардан қорғау", "Пароль ойлап табу", "Спам жіберу"], correct: 1 },
+            { q: "Қоғамдық Wi-Fi арқылы банкке кіру қандай?", opts: ["Әрқашан қауіпсіз", "Қауіпті болуы мүмкін — түсіну үшін жеке VPN не мобильді интернет артық", "Тек кофейняда ғана қауіпті", "Мүлдем мүмкін емес"], correct: 1 },
+            { q: "Досың WhatsAppта «тез аударып жібер» деп сұраса, ал профильі күдікті?", opts: ["Дереу аударым жасау", "Қоңырау шалып өзінен сұрау", "Басқа достарға жіберу", "Карта нөмірін хабарламада жіберу"], correct: 1 },
+            { q: "Жалған жаңалықты тану үшін не істеу керек?", opts: ["Тек заголовок оқу", "Көзі бар ма, 2–3 тәуелсіз сайттан салыстыру", "Скриншотпен ғана сену", "Голос беру түймесін басу"], correct: 1 },
+            { q: "Компьютерді қорғау үшін ОС жаңартулары не үшін керек?", opts: ["Жарнама көру", "Тесіктерді жауып, қауіпсіздік түзетулерін орнату", "Ойын өндіру", "Файл өлшемін азайту"], correct: 1 },
+            { q: "Сенімсіз ойында «реал аккаунт» пен құпия сөз сұраса?", opts: ["Ойын үшін беруге болады", "Бермеу — фишинг болуы мүмкін", "Тек қысқа пароль беру", "Досқа сұрау"], correct: 1 },
+            { q: "HTTPS сілтемесі деген не білдіреді?", opts: ["Сайт үнемі тегін", "Байланыс шифрланады (жазбаша қауіпсіздік)", "Сайт мемлекеттік", "Спам жоқ"], correct: 1 },
+            { q: "Файлдың .exe кеңейтімі қосылса, не істеу керек?", opts: ["Сұрамағанда ашу", "Көзі сенімді болмаса ашпау", "Әрқашан ашу", "Дискке көшіру ғана"], correct: 1 }
+        ];
+        let idx = 0;
+        let score = 0;
+        const answered = new Set();
+
+        function render() {
+            const q = questions[idx];
+            document.getElementById('qText').textContent = q.q;
+            document.getElementById('qNum').textContent = idx + 1;
+            document.getElementById('qTotal').textContent = questions.length;
+            document.getElementById('qProgress').style.width = ((idx + 1) / questions.length * 100) + '%';
+            document.getElementById('qFeedback').classList.add('d-none');
+            document.querySelectorAll('.btn-answer').forEach((btn, i) => {
+                btn.disabled = false;
+                btn.classList.remove('btn-success', 'btn-danger', 'btn-outline-secondary');
+                btn.classList.add('btn-outline-secondary');
+                const span = btn.querySelector('span');
+                if (span) span.textContent = q.opts[i] || '';
+                btn.dataset.idx = String(i);
+            });
+            document.getElementById('btnPrev').disabled = idx === 0;
+            const btnNext = document.getElementById('btnNext');
+            if (idx === questions.length - 1) {
+                btnNext.innerHTML = 'Аяқтау <i class="bi bi-check ms-1"></i>';
+            } else {
+                btnNext.innerHTML = 'Келесі <i class="bi bi-arrow-right ms-1"></i>';
+            }
+        }
+
+        document.getElementById('answersContainer').addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-answer');
+            if (!btn || btn.disabled) return;
+            const q = questions[idx];
+            const choice = parseInt(btn.dataset.idx, 10);
+            if (Number.isNaN(choice)) return;
+            const isCorrect = choice === q.correct;
+            if (!answered.has(idx)) { answered.add(idx); if (isCorrect) score++; }
+            document.querySelectorAll('.btn-answer').forEach(b => { b.disabled = true; b.classList.remove('btn-outline-secondary'); });
+            btn.classList.add(isCorrect ? 'btn-success' : 'btn-danger');
+            const rightBtn = document.querySelector('.btn-answer[data-idx="' + q.correct + '"]');
+            if (rightBtn && !isCorrect) {
+                rightBtn.classList.add('btn-success');
+            }
+            const fb = document.getElementById('qFeedback');
+            fb.classList.remove('d-none');
+            fb.className = 'alert mt-3 ' + (isCorrect ? 'alert-success' : 'alert-danger');
+            fb.textContent = isCorrect ? 'Дұрыс!' : 'Қате. Дұрыс жауап: ' + q.opts[q.correct];
+        });
+
+        document.getElementById('btnNext').addEventListener('click', function() {
+            if (idx < questions.length - 1) {
+                syncQuizProgress(answered.size);
+                idx++;
+                render();
+            } else {
+                syncQuizProgress(questions.length, score);
+                alert('Тест аяқталды! Дұрыс жауап: ' + score + ' / ' + questions.length);
+            }
+        });
+        document.getElementById('btnPrev').addEventListener('click', function() { idx--; render(); });
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Баптаулар</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <a href="{% url 'home' %}" class="sidebar-logo mb-1" title="Басты бет"><img src="{% static 'img/logo.svg' %}" width="40" height="40" alt=""></a>
+            <a href="{% url 'dashboard' %}" class="sidebar-nav-item play-btn" title="Бастау"><i class="bi bi-play-fill"></i></a>
+            <a href="{% url 'dashboard' %}" class="sidebar-nav-item" title="Басты бет"><i class="bi bi-house"></i></a>
+            <a href="#" class="sidebar-nav-item" title="Іздеу"><i class="bi bi-search"></i></a>
+            <a href="{% url 'stats' %}" class="sidebar-nav-item" title="Статистика"><i class="bi bi-bar-chart"></i></a>
+            <a href="#" class="sidebar-nav-item" title="Чат"><i class="bi bi-chat-dots"></i></a>
+            <a href="{% url 'settings' %}" class="sidebar-nav-item active" title="Баптаулар"><i class="bi bi-gear"></i></a>
+            <a href="#" class="sidebar-nav-item" title="Бетбелгілер"><i class="bi bi-bookmark"></i></a>
+        </aside>
+        <main class="main-content">
+            <div class="dashboard-header">
+                <div class="greeting-card">
+                    <h2>Баптаулар</h2>
+                    <p class="datetime text-muted mb-0">Тіркелгі параметрлері</p>
+                </div>
+                <div class="profile-card">
+                    {% include 'includes/profile_avatar.html' %}
+                    <div class="profile-info">
+                        <h6>{{ username }}</h6>
+                        <small>Pro User</small>
+                    </div>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm ms-auto" title="Шығу">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card border">
+                        <div class="card-header bg-light"><strong><i class="bi bi-person me-2"></i>Профиль</strong></div>
+                        <div class="card-body">
+                            <form method="post" action="{% url 'settings' %}" enctype="multipart/form-data" class="mb-4 pb-3 border-bottom">
+                                {% csrf_token %}
+                                <label class="form-label"><i class="bi bi-image me-1"></i>Профиль суреті</label>
+                                {% if profile.avatar %}
+                                    <div class="mb-2"><img src="{{ profile.avatar.url }}" alt="" class="rounded-circle" style="width:72px;height:72px;object-fit:cover;"></div>
+                                {% endif %}
+                                <input type="file" name="avatar" class="form-control" accept="image/*">
+                                <button type="submit" class="btn btn-success btn-sm mt-2">Суретті сақтау</button>
+                            </form>
+                            <div class="mb-3">
+                                <label class="form-label">Аты-жөні</label>
+                                <input type="text" class="form-control" value="{{ username }}" placeholder="Атыңызды енгізіңіз" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Электрондық пошта</label>
+                                <input type="email" class="form-control" placeholder="email@мысал.kz">
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label">Сынып</label>
+                                <input type="text" class="form-control" value="7" placeholder="Сыныбыңыз">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mt-4">
+                        <div class="card-header bg-light"><strong><i class="bi bi-lock me-2"></i>Құпия сөзді өзгерту</strong></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Ағымдағы құпия сөз</label>
+                                <input type="password" class="form-control" placeholder="••••••••">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Жаңа құпия сөз</label>
+                                <input type="password" class="form-control" placeholder="••••••••">
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label">Жаңа құпия сөзді қайталаңыз</label>
+                                <input type="password" class="form-control" placeholder="••••••••">
+                            </div>
+                            <button class="btn btn-success mt-3">Сақтау</button>
+                        </div>
+                    </div>
+                    <div class="card border mt-4">
+                        <div class="card-header bg-light"><strong><i class="bi bi-bell me-2"></i>Хабарландырулар</strong></div>
+                        <div class="card-body">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="notif1" checked>
+                                <label class="form-check-label" for="notif1">Жаңа тапсырмалар туралы хабарландыру</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="notif2" checked>
+                                <label class="form-check-label" for="notif2">Прогресс есебі</label>
+                            </div>
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" id="notif3">
+                                <label class="form-check-label" for="notif3">Жаңалықтар және кеңестер</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Сенімді сілтемелер</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="top-navbar d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="{% url 'dashboard' %}"><i class="bi bi-shield-check me-2"></i>КИБЕР-САҚШЫ</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+    </nav>
+    <div class="main-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="module-header"><i class="bi bi-link-45deg"></i> СЕНІМДІ СІЛТЕМЕЛЕР</div>
+                <div class="module-content">
+                    <p class="text-muted mb-4">Әр сілтемені талдап, <strong>сенімді</strong> немесе <strong>қауіпті</strong> деп белгілеңіз. Батырма басылған соң дұрыс/қате көрсетіледі.</p>
+                    <p class="small text-muted mb-3" id="linksScore">Дұрыс жауап: <strong id="linksCorrect">0</strong> / <span id="linksAnswered">0</span></p>
+                    <div class="list-group list-group-flush" id="linksList">
+                        <div class="list-group-item py-3 border link-row" data-correct="safe">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://www.google.com/search</code>
+                                    <small class="d-block text-muted mt-1">Google іздеу жүйесі</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="danger">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://paypal-secure-login.xyz/account</code>
+                                    <small class="d-block text-muted mt-1">PayPal тіркелгісі деп жазылған</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="safe">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://github.com</code>
+                                    <small class="d-block text-muted mt-1">GitHub платформасы</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="danger">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">http://free-iphone-gift.ru/claim</code>
+                                    <small class="d-block text-muted mt-1">Тегін iPhone сыйлығы</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="safe">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://www.youtube.com/watch?v=abc123</code>
+                                    <small class="d-block text-muted mt-1">YouTube бейнесі</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="danger">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://amaz0n-shop-login.com/signin</code>
+                                    <small class="d-block text-muted mt-1">Amazon аккаунты (домен қате жазылған)</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="safe">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://egov.kz/cms/kk</code>
+                                    <small class="d-block text-muted mt-1">Ресми eGov қызметі</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="danger">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://bit.ly/win-iphone-now</code>
+                                    <small class="d-block text-muted mt-1">Қысқа сілтеме — не жатқыны белгісіз</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                        <div class="list-group-item py-3 border link-row" data-correct="safe">
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <div class="flex-grow-1">
+                                    <code class="text-break d-block">https://kaspersky.kz</code>
+                                    <small class="d-block text-muted mt-1">Антивирус ресми сайты</small>
+                                </div>
+                                <div class="btn-group flex-shrink-0">
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-choice="safe">Сенімді</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-choice="danger">Қауіпті</button>
+                                </div>
+                            </div>
+                            <div class="link-feedback small fw-semibold mt-2 d-none"></div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-4 mb-0">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        <strong>Кеңес:</strong> HTTPS, ресми домен атауы, қысқа сілтеме және «сыйлық» уәделерін бірге талдаңыз.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let linksCorrect = 0, linksAnswered = 0;
+        document.querySelectorAll('.link-row').forEach(row => {
+            const correct = row.getAttribute('data-correct');
+            const feedback = row.querySelector('.link-feedback');
+            row.querySelectorAll('button[data-choice]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (row.dataset.done === '1') return;
+                    row.dataset.done = '1';
+                    const choice = this.getAttribute('data-choice');
+                    const ok = choice === correct;
+                    if (ok) linksCorrect++;
+                    linksAnswered++;
+                    document.getElementById('linksCorrect').textContent = linksCorrect;
+                    document.getElementById('linksAnswered').textContent = linksAnswered;
+                    row.querySelectorAll('button[data-choice]').forEach(b => b.disabled = true);
+                    this.classList.remove('btn-outline-success', 'btn-outline-danger');
+                    this.classList.add(ok ? 'btn-success' : 'btn-danger');
+                    const other = correct === 'safe' ? 'Сенімді' : 'Қауіпті';
+                    feedback.classList.remove('d-none');
+                    feedback.textContent = ok ? '✓ Дұрыс!' : '✗ Қате. Дұрыс жауап: «' + other + '».';
+                    feedback.className = 'link-feedback small fw-semibold mt-2 ' + (ok ? 'text-success' : 'text-danger');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

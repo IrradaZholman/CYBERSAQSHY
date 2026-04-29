@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Теория</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="theory-layout">
+        <aside class="theory-sidebar">
+            <a href="{% url 'dashboard' %}" class="theory-brand"><i class="bi bi-shield-check me-2"></i>КИБЕР-САҚШЫ</a>
+            <div class="px-2 mb-2">
+                <label for="theorySearch" class="visually-hidden">Іздеу</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="search" id="theorySearch" class="form-control" placeholder="Тақырып бойынша іздеу..." autocomplete="off">
+                </div>
+            </div>
+            <nav class="theory-nav" id="theoryNav">
+                <h6 class="theory-nav-title">Тақырыптар</h6>
+                <a href="?topic=intro" class="theory-nav-item {% if topic == 'intro' %}active{% endif %}" data-search="кіріспе киберқауіпсіздік">
+                    <i class="bi bi-house-door"></i> Кіріспе
+                </a>
+                <a href="?topic=phishing" class="theory-nav-item {% if topic == 'phishing' %}active{% endif %}" data-search="фишинг алаяқ хабар">
+                    <i class="bi bi-shield-exclamation"></i> Фишинг
+                </a>
+                <a href="?topic=password" class="theory-nav-item {% if topic == 'password' %}active{% endif %}" data-search="құпия сөз пароль">
+                    <i class="bi bi-key"></i> Құпия сөз
+                </a>
+                <a href="?topic=links" class="theory-nav-item {% if topic == 'links' %}active{% endif %}" data-search="сілтеме домен https">
+                    <i class="bi bi-link-45deg"></i> Сенімді сілтемелер
+                </a>
+                <a href="?topic=spam" class="theory-nav-item {% if topic == 'spam' %}active{% endif %}" data-search="спам пошта">
+                    <i class="bi bi-envelope-shield"></i> Спам
+                </a>
+                <a href="?topic=qr" class="theory-nav-item {% if topic == 'qr' %}active{% endif %}" data-search="qr код сканер">
+                    <i class="bi bi-qr-code-scan"></i> QR код қауіпі
+                </a>
+                <a href="?topic=ai" class="theory-nav-item {% if topic == 'ai' %}active{% endif %}" data-search="жасанды интеллект жи">
+                    <i class="bi bi-robot"></i> ЖИ және дезинформация
+                </a>
+            </nav>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm mt-3"><i class="bi bi-arrow-left me-1"></i>Артқа</a>
+        </aside>
+        <main class="theory-content">
+            {% if topic == 'intro' %}
+            <h1>Киберқауіпсіздік негіздері</h1>
+            <p class="lead">Интернетте қауіпсіз болу үшін қандай да бір негізгі ережелерді білу керек.</p>
+            <hr>
+            <h3>Не үшін маңызды?</h3>
+            <p>Күнделікті өмірде біз интернетті көп пайдаланамыз: хабарласу, әлеуметтік желілер, интернет-банкинг. Алаяқтар да осы платформаларды пайдаланады. Олардың мақсаты — сіздің құпия мәліметтеріңізді алу.</p>
+            <h3>Қандай қауіптер бар?</h3>
+            <ul>
+                <li><strong>Фишинг</strong> — сенімді көрінетін хабарлар арқылы логин/құпия сөз алу</li>
+                <li><strong>Спам</strong> — қалаусыз рекламалық хабарлар</li>
+                <li><strong>Қауіпті сілтемелер</strong> — вирус және алаяқтық сайттарға бағыттау</li>
+                <li><strong>Әлсіз құпия сөз</strong> — түрмешік бұзуға оңай</li>
+            </ul>
+            <p>Бұл курста сіз осы қауіптерді тануды және қорғану жолдарын үйренесіз.</p>
+
+            {% elif topic == 'phishing' %}
+            <h1>Фишинг қандай қауіпті?</h1>
+            <p class="lead">Фишинг — алаяқтардың құпия мәліметтеріңізді алу әдісі.</p>
+            <hr>
+            <h3>Фишинг деген не?</h3>
+            <p>Фишинг — алаяқтар сізді жеңіл сендіру үшін сенімді көрінетін хабарлар жібереді. Мысалы: «Instagram», «банк», «салық» атынан. Олар сізді сілтемеге басуға немесе логин/құпия сөз енгізуге ынталандырады.</p>
+            <h3>Фишинг белгілері</h3>
+            <ul>
+                <li>Сізді жедел әрекет етуге шақырады («Тіркелгіңіз бұғатталады!»)</li>
+                <li>Қорқыту немесе қызықты уәделер (сыйлық, жеңіліс)</li>
+                <li>Құпия мәліметтерді (құпия сөз, карта) сұрайды</li>
+                <li>Қысқа немесе күдікті сілтемелер (bit.ly, қысқартылған URL)</li>
+            </ul>
+            <h3>Қалай қорғануға болады?</h3>
+            <p>Белгісіз сілтемелерді ашпаңыз. Құпия мәліметтерді хабарламада бермеңіз. Домен атын мұқият тексеріңіз (instagram.com екеніне сенімді болыңыз, instagram-support.xyz емес).</p>
+
+            {% elif topic == 'password' %}
+            <h1>Құпия сөз қалай құрастыру керек?</h1>
+            <p class="lead">Күшті құпия сөз — киберқауіпсіздіктің негізі.</p>
+            <hr>
+            <h3>Құпия сөз талаптары</h3>
+            <ul>
+                <li><strong>Ұзындығы</strong> — кем дегенде 12 таңба</li>
+                <li><strong>Әртүрлі таңбалар</strong> — үлкен/кіші әріптер, сандар, арнайы белгілер (!@#$)</li>
+                <li><strong>Қарапайым сөздерден аулақ болу</strong> — «password», «123456», туыс аты</li>
+            </ul>
+            <h3>Құпия сөз қоймалығын пайдалану</h3>
+            <p>Әр сайт үшін әртүрлі құпия сөз қолдаңыз. Құпия сөз басқарушы (мысалы, Bitwarden) пайдалану қауіпсіздікті арттырады.</p>
+
+            {% elif topic == 'links' %}
+            <h1>Сенімді сілтемелерді қалай тануға болады?</h1>
+            <p class="lead">Сілтемені ашпас бұрын домен атын тексеріңіз.</p>
+            <hr>
+            <h3>Сенімді сілтеме белгілері</h3>
+            <ul>
+                <li><strong>HTTPS://</strong> — шифрланған байланыс</li>
+                <li><strong>Белгілі домендер</strong> — google.com, youtube.com, bank.kz</li>
+                <li><strong>Қысқа сілтемелерге сақ болыңыз</strong> — bit.ly, t.co астында қауіпті URL жасырылуы мүмкін</li>
+            </ul>
+            <h3>Қауіпті сілтеме белгілері</h3>
+            <p>Күдікті домендер (.xyz, .ru, босаға домендер), «тегін сыйлық», «жедел ашыңыз» сияқты уәделер — қауіп белгісі.</p>
+
+            {% elif topic == 'spam' %}
+            <h1>Спамнан қалай қорғануға болады?</h1>
+            <p class="lead">Спам — сіз сұрамаған рекламалық немесе алаяқтық хабарламалар.</p>
+            <hr>
+            <h3>Спам түрлері</h3>
+            <ul>
+                <li>Рекламалық спам</li>
+                <li>Фишингпен байланысты спам</li>
+                <li>Алаяқтық уәделер (сыйлық, жеңіліс)</li>
+            </ul>
+            <h3>Қорғану жолдары</h3>
+            <p>Белгісіз жіберушілерден келген хабарларды ашпаңыз. Сілтемелерді баспаңыз. «Отписаться» батырмасын басу кейде қауіпті болуы мүмкін — оның орнына хабарды өшіріңіз.</p>
+
+            {% elif topic == 'qr' %}
+            <h1>QR код қауіпі</h1>
+            <p class="lead">QR кодтар қолайлы, бірақ оларды скандау алдында сақ болыңыз.</p>
+            <hr>
+            <h3>QR код қауіпі деген не?</h3>
+            <p>Алаяқтар қауіпті сілтемелерді QR кодқа жасыра алады. Сіз сканермен ашқанда фишинг сайтына, вирус немесе алаяқтық бетке түсуіңіз мүмкін.</p>
+            <h3>Қалай қорғануға болады?</h3>
+            <ul>
+                <li>Тек сенімді жерлердегі QR кодтарды скандаңыз (мұрағат, ресми билет)</li>
+                <li>Белгісіз плакаттарда, стендтерде — сақ болыңыз</li>
+                <li>Скандағаннан кейін URL-ды тексеріңіз (қауіпті домен болмасын)</li>
+            </ul>
+            <p><a href="{% url 'qr_simulator' %}" class="btn btn-success">QR код симуляторын қолданып көріңіз</a></p>
+
+            {% elif topic == 'ai' %}
+            <h1>ЖИ және дезинформация</h1>
+            <p class="lead">Жасанды интеллект (ЖИ) мәтінді жасай алады. Адам мен ЖИ жазығанды ажырату маңызды.</p>
+            <hr>
+            <h3>Не үшін маңызды?</h3>
+            <p>Фишинг хабарлары көбінесе ЖИ көмегімен жазылады — олар табиғи көрінеді. Дезинформация, жалған жаңалықтар да ЖИ арқылы таратылуы мүмкін.</p>
+            <h3>ЖИ мәтінінің белгілері</h3>
+            <ul>
+                <li>Өте үздіксіз, «іdeal» мәтін</li>
+                <li>Қайталанатын формулалар</li>
+                <li>Кейде логикалық қателер немесе жалған деректер</li>
+            </ul>
+            <p><a href="{% url 'ai_detect' %}" class="btn btn-success">«ЖИ мен шынды ажырату» тапсырмасын орындаңыз</a></p>
+
+            {% else %}
+            <h1>Киберқауіпсіздік негіздері</h1>
+            <p>Сол жақтан тақырыпты таңдаңыз.</p>
+            {% endif %}
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            const input = document.getElementById('theorySearch');
+            const nav = document.getElementById('theoryNav');
+            if (!input || !nav) return;
+            input.addEventListener('input', function() {
+                const q = this.value.trim().toLowerCase().replace(/\s+/g, ' ');
+                const items = nav.querySelectorAll('a.theory-nav-item');
+                let any = false;
+                items.forEach(function(a) {
+                    const hay = ((a.getAttribute('data-search') || '') + ' ' + a.textContent).toLowerCase();
+                    const show = !q || hay.includes(q);
+                    a.style.display = show ? '' : 'none';
+                    if (show) any = true;
+                });
+                const title = nav.querySelector('.theory-nav-title');
+                if (title) title.style.display = any ? '' : 'none';
+            });
+        })();
+    </script>
+</body>
+</html>
