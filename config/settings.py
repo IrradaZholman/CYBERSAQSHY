@@ -96,7 +96,7 @@ MESSAGE_TAGS = {
 # Ngrok URL әр жаңа сеанста өзгерсе: осы тізімге қосыңыз немесе орта айнымалысын қойыңыз:
 #   set CSRF_TRUSTED_ORIGINS=https://СІЗДІҢ.ngrok-free.app
 CSRF_TRUSTED_ORIGINS = [
-    "https://bec2-2406-2d40-5dac-8208-3caa-8542-5210-1cb0.ngrok-free.app",
+    "https://*.onrender.com",
 ]
 _extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
 if _extra_origins:
