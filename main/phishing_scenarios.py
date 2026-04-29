@@ -1,0 +1,88 @@
+"""Директ-хабарлар симуляторы: фишинг пен шынайы хабарлар."""
+
+PHISHING_DM_SCENARIOS = [
+    {
+        "id": 0,
+        "sender": "Instagram.support",
+        "channel": "Direct Message",
+        "body": "Сәлеметсіз бе! Бұл Instagram.support. СІЗ IPHONE 15 ҰТЫП АЛДЫҢЫЗ! ТЕЗ АШЫҢЫЗ! Сілтеме: https://insta-prize.xyz/win",
+        "is_phishing": True,
+    },
+    {
+        "id": 1,
+        "sender": "Meta Security",
+        "channel": "Қауіпсіздік ескертуі",
+        "body": "Сіздің тіркелгіңізге жаңа құрылғыдан кіру болды (Алматы, KZ). Бұл сіз болмаған болсаңыз, Instagram-дағы «Параметрлер → Қауіпсіздік» бөлімін ашыңыз. Біз сізден құпия сөз сұрамаймыз.",
+        "is_phishing": False,
+    },
+    {
+        "id": 2,
+        "sender": "verify-instagram.net",
+        "channel": "Direct Message",
+        "body": "Тіркелгіңіз 24 сағ ішінде жойылады. Растау үшін осы жерге басыңыз: http://verify-instagram.net/login",
+        "is_phishing": True,
+    },
+    {
+        "id": 3,
+        "sender": "doubledutch.kz",
+        "channel": "Direct Message",
+        "body": "Сәлем! Сенің stories-ке лайк қалдырдым. Келесі жолы мектепте кездесейік 🙂",
+        "is_phishing": False,
+    },
+    {
+        "id": 4,
+        "sender": "Meta for Business",
+        "channel": "Хабарлама",
+        "body": "Рекламаңыздың есебі дайын. Толығырақ business.instagram.com арқылы қараңыз (ресми домен).",
+        "is_phishing": False,
+    },
+    {
+        "id": 5,
+        "sender": "InstaPrize_2025",
+        "channel": "Direct Message",
+        "body": "Құттықтаймыз! Сіз 500 000 ₸ ұтып алдыңыз! Карта нөмірін жіберіңіз, ақшаны аударып жібереміз 💳",
+        "is_phishing": True,
+    },
+    {
+        "id": 6,
+        "sender": "aisha.school7",
+        "channel": "Direct Message",
+        "body": "Салем! Үй тапсырмасын мектеп чатынан көшіріп жібере аласың ба?",
+        "is_phishing": False,
+    },
+    {
+        "id": 7,
+        "sender": "security-alert.xyz",
+        "channel": "Direct Message",
+        "body": "⚠️ ШОШУ! Аккаунтыңыз бұзылды! Құпия сөзді мына жерде жаңартыңыз: https://security-alert.xyz/ig",
+        "is_phishing": True,
+    },
+    {
+        "id": 8,
+        "sender": "Instagram",
+        "channel": "Жүйелік хабарлама",
+        "body": "Сіздің постыңыз қауымдастық ережелеріне сай келмейтіні себепті шектелді. Қарап шығу: қолданба ішіндегі «Хабарламалар».",
+        "is_phishing": False,
+    },
+    {
+        "id": 9,
+        "sender": "follow_back_fast",
+        "channel": "Direct Message",
+        "body": "Платформадағы барлық жазылушыларды бір сағатта қосу! Тек осы ботқа төлесіп қосылыңыз: t.me/fake_boost",
+        "is_phishing": True,
+    },
+    {
+        "id": 10,
+        "sender": "Photographer_Almaty",
+        "channel": "Direct Message",
+        "body": "Кешегі шатырдағы фотолар дайын. Гой дискіден жүктеп ал, сілтемені жеке жібердім (Google Drive).",
+        "is_phishing": False,
+    },
+    {
+        "id": 11,
+        "sender": "login-instagram.support",
+        "channel": "Direct Message",
+        "body": "Біз сіздің парақшаңызда күдікті әрекет таптық. Деректерді растау: https://login-instagram.support/confirm",
+        "is_phishing": True,
+    },
+]
