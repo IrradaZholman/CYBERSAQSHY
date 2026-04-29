@@ -1,1 +1,8 @@
+<div class="profile-avatar{% if user_profile.avatar %} profile-avatar--has-img{% endif %}">
+    {% if user_profile.avatar %}
+        <img src="{{ user_profile.avatar.url }}" alt="">
+    {% else %}
+        {{ user.username|slice:":1"|upper }}
+    {% endif %}
+</div>
 
