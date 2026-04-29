@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибер-Сақшы | Тіркелу (демо)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card card shadow-lg border-0">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <div class="logo-icon mb-3"><i class="bi bi-person-plus"></i></div>
+                    <h1 class="h3 fw-bold text-dark">ТІРКЕЛУ (демо)</h1>
+                    <p class="text-muted small">Нақты аккаунт үшін Django серверін іске қосып <code>/register/</code> бетін пайдаланыңыз.</p>
+                </div>
+                <form id="regForm">
+                    <div class="mb-3">
+                        <label class="form-label">Пайдаланушы аты</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Құпия сөз</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">Тіркелу (демо)</button>
+                </form>
+                <p class="text-center small mt-3 mb-0"><a href="index.html">Кіруге оралу</a></p>
+            </div>
+        </div>
+    </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
